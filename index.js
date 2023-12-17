@@ -30,7 +30,7 @@ const client = new MongoClient(uri, {
 const db = client.db("restaurant-db0");
 const menus = db.collection("menus");
 const admins = db.collection("admins");
-const messages = db.collection("messages")
+const reservations = db.collection("reservations")
 
 app.get("/", (req, res) => {
   res.send("RUNNING");
@@ -96,14 +96,19 @@ async function run() {
 
     })
 
-    app.get("/messages", async (req, res) => {
-      const result = await messages.find().toArray()
+    app.get("/reservations", async (req, res) => {
+      let query = {}
+      const date = req.query.date
+      if(date){
+        query = { date: date }
+      }
+      const result = await reservations.find(query).toArray()
       res.send(result)
     })
 
-    app.post("/messages", async(req, res) => {
+    app.post("/reservations", async(req, res) => {
       const body = req.body
-      const result = await messages.insertOne(body)
+      const result = await reservations.insertOne(body)
       res.send(result)
     })
 

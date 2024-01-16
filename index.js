@@ -99,8 +99,12 @@ async function run() {
     app.get("/reservations", async (req, res) => {
       let query = {}
       const date = req.query.date
-      if(date){
-        query = { date: date }
+      const service = req.query.service
+      const email = req.query.email
+      if(date && service){
+        query = { date: date, service: service }
+      }else if(email){
+        query = { email: email }
       }
       const result = await reservations.find(query).toArray()
       res.send(result)

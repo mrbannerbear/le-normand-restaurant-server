@@ -104,7 +104,7 @@ async function run() {
       if(date && service){
         query = { date: date, service: service }
       }else if(email){
-        query = { email: email }
+        query = { email: email } 
       }
       const result = await reservations.find(query).toArray()
       res.send(result)
